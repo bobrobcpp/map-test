@@ -38,7 +38,7 @@ function foo(){
     alert("Suprise");
 }
 
-function codeAddress(place, callback){
+function codeAddress(place){
         geocoder.geocode( { 'address': place}, function(results, status) {
       if (status == 'OK') {
         map.setCenter(results[0].geometry.location);
@@ -46,23 +46,12 @@ function codeAddress(place, callback){
             map: map,
             position: results[0].geometry.location
         });
-
-
- // function codeAddress(place) {
- //    geocoder.geocode( { 'address': place}, function(results, status) {
- //      if (status == 'OK') {
- //        map.setCenter(results[0].geometry.location);
- //         marker = new google.maps.Marker({
- //            map: map,
- //            position: results[0].geometry.location
- //        });
-
-
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
       }
     });
-    callback();
+        google.maps.event.addListenerOnce(map, 'tilesloaded', foo);
+
   }
 
 
