@@ -17,442 +17,100 @@ API Course, Lesson 1 -->
    </div>
    <script>
 
+var geocoder;
+var map;
+var marker;
+function initMap() {
+    var latlng = new google.maps.LatLng(-34.397, 150.644);
 
-   var locations = [
-   {lat: 51.507351, lng: -0.127758},
-   {lat: 51.500175, lng: -0.133233},
-   {lat: 51.500729, lng: -0.124625 },
-   {lat: 51.513845, lng: -0.098351},
-   {lat: 51.519413, lng: -0.126957},
-   {lat: 51.513614, lng: -0.136549},
-   {lat: 51.511894, lng: -0.159366},
-   {lat: 51.5299092, lng: -0.1860307}
-   ]
-   var map;
-   var mark;
-     function toggleBounce() {
-  if (mark.getAnimation() !== null) {
-    mark.setAnimation(null);
-  } else {
-      mark.setAnimation(google.maps.Animation.BOUNCE);
+    geocoder = new google.maps.Geocoder();
+    directionsDisplay = new google.maps.DirectionsRenderer();
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: latlng,
+        zoom: 5,
+    });
+    var loc = "Italy";
+  // directionsDisplay.setMap(map);
+    codeAddress("Italy", foo);
+};
+
+function foo(){
+    alert("Suprise");
+}
+
+function codeAddress(place, callback){
+        geocoder.geocode( { 'address': place}, function(results, status) {
+      if (status == 'OK') {
+        map.setCenter(results[0].geometry.location);
+        marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
+        });
+
+
+ // function codeAddress(place) {
+ //    geocoder.geocode( { 'address': place}, function(results, status) {
+ //      if (status == 'OK') {
+ //        map.setCenter(results[0].geometry.location);
+ //         marker = new google.maps.Marker({
+ //            map: map,
+ //            position: results[0].geometry.location
+ //        });
+
+
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+    callback();
   }
-  }
+
+
+// function calcRoute() {
+//   var start = locations[0];
+//   var end = locations[4];
+//   var request = {
+//     origin: start,
+//     destination: end,
+//     travelMode: 'DRIVING'
+//   };
+//   directionsService.route(request, function(result, status) {
+//     if (status == 'OK') {
+//       directionsDisplay.setDirections(result);
+//     }
+//   });
+// }
 
 
 
-  var contentString = " Hello This is an the location of westminster";
+
+  // var contentString = " Italy map info window text";
 
      // TODO: Create a map variable
      // TODO: Complete the following function to initialize the map
-     function initMap() {
-      var styledMapType = new google.maps.StyledMapType(
-        [
-    {
-        "featureType": "all",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "on"
-            }
-        ]
-    },
-    {
-        "featureType": "all",
-        "elementType": "labels",
-        "stylers": [
-            {
-                "visibility": "off"
-            },
-            {
-                "saturation": "-100"
-            }
-        ]
-    },
-    {
-        "featureType": "all",
-        "elementType": "labels.text.fill",
-        "stylers": [
-            {
-                "saturation": 36
-            },
-            {
-                "color": "#000000"
-            },
-            {
-                "lightness": 40
-            },
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "all",
-        "elementType": "labels.text.stroke",
-        "stylers": [
-            {
-                "visibility": "off"
-            },
-            {
-                "color": "#000000"
-            },
-            {
-                "lightness": 16
-            }
-        ]
-    },
-    {
-        "featureType": "all",
-        "elementType": "labels.icon",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "administrative",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#000000"
-            },
-            {
-                "lightness": 20
-            }
-        ]
-    },
-    {
-        "featureType": "administrative",
-        "elementType": "geometry.stroke",
-        "stylers": [
-            {
-                "color": "#000000"
-            },
-            {
-                "lightness": 17
-            },
-            {
-                "weight": 1.2
-            }
-        ]
-    },
-    {
-        "featureType": "landscape",
-        "elementType": "geometry",
-        "stylers": [
-            {
-                "color": "#000000"
-            },
-            {
-                "lightness": 20
-            }
-        ]
-    },
-    {
-        "featureType": "landscape",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#4d6059"
-            }
-        ]
-    },
-    {
-        "featureType": "landscape",
-        "elementType": "geometry.stroke",
-        "stylers": [
-            {
-                "color": "#4d6059"
-            }
-        ]
-    },
-    {
-        "featureType": "landscape.natural",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#4d6059"
-            }
-        ]
-    },
-    {
-        "featureType": "poi",
-        "elementType": "geometry",
-        "stylers": [
-            {
-                "lightness": 21
-            }
-        ]
-    },
-    {
-        "featureType": "poi",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#4d6059"
-            }
-        ]
-    },
-    {
-        "featureType": "poi",
-        "elementType": "geometry.stroke",
-        "stylers": [
-            {
-                "color": "#4d6059"
-            }
-        ]
-    },
-    {
-        "featureType": "road",
-        "elementType": "geometry",
-        "stylers": [
-            {
-                "visibility": "on"
-            },
-            {
-                "color": "#7f8d89"
-            }
-        ]
-    },
-    {
-        "featureType": "road",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#7f8d89"
-            }
-        ]
-    },
-    {
-        "featureType": "road.highway",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#7f8d89"
-            },
-            {
-                "lightness": 17
-            }
-        ]
-    },
-    {
-        "featureType": "road.highway",
-        "elementType": "geometry.stroke",
-        "stylers": [
-            {
-                "color": "#7f8d89"
-            },
-            {
-                "lightness": 29
-            },
-            {
-                "weight": 0.2
-            }
-        ]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "geometry",
-        "stylers": [
-            {
-                "color": "#000000"
-            },
-            {
-                "lightness": 18
-            }
-        ]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#7f8d89"
-            }
-        ]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "geometry.stroke",
-        "stylers": [
-            {
-                "color": "#7f8d89"
-            }
-        ]
-    },
-    {
-        "featureType": "road.local",
-        "elementType": "geometry",
-        "stylers": [
-            {
-                "color": "#000000"
-            },
-            {
-                "lightness": 16
-            }
-        ]
-    },
-    {
-        "featureType": "road.local",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#7f8d89"
-            }
-        ]
-    },
-    {
-        "featureType": "road.local",
-        "elementType": "geometry.stroke",
-        "stylers": [
-            {
-                "color": "#7f8d89"
-            }
-        ]
-    },
-    {
-        "featureType": "transit",
-        "elementType": "geometry",
-        "stylers": [
-            {
-                "color": "#000000"
-            },
-            {
-                "lightness": 19
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "all",
-        "stylers": [
-            {
-                "color": "#2b3638"
-            },
-            {
-                "visibility": "on"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "geometry",
-        "stylers": [
-            {
-                "color": "#2b3638"
-            },
-            {
-                "lightness": 17
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#24282b"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "geometry.stroke",
-        "stylers": [
-            {
-                "color": "#24282b"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "labels",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "labels.text",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "labels.text.fill",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "labels.text.stroke",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "labels.icon",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    }
-],
-            {name: 'Styled Map'});
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: locations[0],
-        zoom: 13,
-        mapTypeControlOptions: {
-            mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
-                    'styled_map']
-          }
+     // function initMap() {
 
-      });
+     //  map = new google.maps.Map(document.getElementById('map'), {
+     //    center: locations[0],
+     //    zoom: 13,
+     //    mapTypeControlOptions: {
+     //        mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
+     //         ]
+     //      }
 
-        var infowindow = new google.maps.InfoWindow({
-          content: contentString
-        });
+     //  });
 
-      mark = new google.maps.Marker({
-        position: locations[0],
-        map: map,
-        draggable: true,
-        title: "Hello London",
-        label: "L"
-        // animation: google.maps.Animation.BOUNCE
-      });
-
-      mark.addListener('click', toggleBounce);
+     //    var infowindow = new google.maps.InfoWindow({
+     //      content: contentString
+     //    });
 
 
-
-
-  mark.addListener('click', function() {
-    infowindow.open(map, mark);
-  });
-
-       // TODO: use a constructor to create a new map JS object. You can use the coordinates
-       // we used, 40.7413549, -73.99802439999996 or your own!
-                    map.mapTypes.set('styled_map', styledMapType);
-        map.setMapTypeId('styled_map');
-     }
+     // }
 
    </script>
-   <!--TODO: Load the JS API ASYNCHRONOUSLY below.-->
-   <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIItxvcVD_BCeEO-rVW9SIYLH4m7uG_C4&callback=initMap" async defer>
+
+   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBXLnpNdep16oWXr8v2lbLeoCoYPId2lyo&callback=initMap" async defer/>
+   <!-- <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIItxvcVD_BCeEO-rVW9SIYLH4m7uG_C4&callback=initMap" async defer> -->
 
    </script>
  </body>
