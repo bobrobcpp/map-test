@@ -35,39 +35,73 @@ function initMap() {
         zoom: 5,
     });
     directionsDisplay.setMap(map);
-        configRoute("Paris", "Rome", codeAddress,function(){
-            console.log(locArray[0]);
+
+    // function printer(){
+    //     console.log("End of function");
+    // }
+
+    //     configRoute("Paris", "Rome", printer);
+    getAddr("Rome", function(res) {
+      map.setCenter(res[0].geometry.location);
+        marker = new google.maps.Marker({
+            map: map,
+            position: res[0].geometry.location
         });
+        locArray.push(res[0].geometry.location);
+        console.log(res[0].geometry.location.toString());
+});
 
 };
 
 
-
-function codeAddress(place){
-        geocoder.geocode( { 'address': place}, function(results, status) {
-      if (status == 'OK') {
-        map.setCenter(results[0].geometry.location);
-        marker = new google.maps.Marker({
-            map: map,
-            position: results[0].geometry.location
+getAddr = function(addr, f){
+    if(typeof addr != 'undefined' && addr != null) {
+        geocoder.geocode( { address: addr, }, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            f(results);
+          }
         });
-        locArray.push(results[0].geometry.location);
-        console.log(place);
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
-      }
-    });
-  }
-
-
-
- function configRoute(start, end, findAddress, callback){
-    var start = start;
-    var end = end;
-    var startPoint = findAddress(start);
-     var endPoint = findAddress(end);
-     callback();
+    }
+    return -1;
 }
+
+
+
+
+
+
+
+
+// function codeAddress(place, codeCall){
+//         geocoder.geocode( { 'address': place}, function(results, status) {
+//       if (status == 'OK') {
+//         map.setCenter(results[0].geometry.location);
+//         marker = new google.maps.Marker({
+//             map: map,
+//             position: results[0].geometry.location
+//         });
+//         locArray.push(results[0].geometry.location);
+//         console.log(place);
+//       } else {
+//         alert('Geocode was not successful for the following reason: ' + status);
+//       }
+//     });
+//         codeCall();
+//   }
+
+
+
+//  function configRoute(start, end, callback){
+//     // var start = start;
+//     // var end = end;
+//     var startPoint = codeAddress(start, function(){
+//         var endPoint = codeAddress(end, function(){
+
+//         });
+//                     callback();
+//     });
+
+// }
 
 
    </script>
