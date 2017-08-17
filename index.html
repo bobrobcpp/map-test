@@ -20,23 +20,34 @@ API Course, Lesson 1 -->
 var geocoder;
 var map;
 var marker;
-function initMap() {
-    var latlng = new google.maps.LatLng(-34.397, 150.644);
+var directionsService;
+var locArray = [];
 
+
+function initMap() {
+     directionsService = new google.maps.DirectionsService();
+    var latlng = new google.maps.LatLng(-34.397, 150.644);
+    var directionsDisplay = new google.maps.DirectionsRenderer();
     geocoder = new google.maps.Geocoder();
     directionsDisplay = new google.maps.DirectionsRenderer();
     map = new google.maps.Map(document.getElementById('map'), {
         center: latlng,
         zoom: 5,
     });
-    var loc = "Italy";
+    directionsDisplay.setMap(map);
+    // var loc = "Italy";
   // directionsDisplay.setMap(map);
-    codeAddress("Italy", foo);
+    // codeAddress("Italy");
+    // configRoute("Rome","Paris",codeAddress, calcRoute);
+    // calcRoute();
+        configRoute("Paris", "Rome", codeAddress,function(){
+            console.log(locArray[0]);
+        });
+
+
 };
 
-function foo(){
-    alert("Suprise");
-}
+
 
 function codeAddress(place){
         geocoder.geocode( { 'address': place}, function(results, status) {
@@ -46,21 +57,52 @@ function codeAddress(place){
             map: map,
             position: results[0].geometry.location
         });
+        locArray.push(results[0].geometry.location);
+        console.log(place);
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
       }
     });
-        google.maps.event.addListenerOnce(map, 'tilesloaded', foo);
-
   }
 
 
-// function calcRoute() {
-//   var start = locations[0];
-//   var end = locations[4];
+
+ function configRoute(start, end, findAddress, callback){
+    var start = start;
+    var end = end;
+    var startPoint = findAddress(start);
+     var endPoint = findAddress(end);
+     // callback();
+}
+
+
+
+// function calcRoute(){
+//     console.log(locArray[0]);
+//   //     var request = {
+//   //   origin: startPoint,
+//   //   destination: endPoint,
+//   //   travelMode: 'DRIVING'
+//   // };
+//   // directionsService.route(request, function(result, status) {
+//   //   if (status == 'OK') {
+//   //     directionsDisplay.setDirections(result);
+//   //   }
+//   // });
+// }
+
+
+// function calcRoute(start, end) {
+    // console.log(r.toString());
+  // var start = codeAddress("Florence",foo);
+  // var end = codeAddress("Milan",foo);
+
+//   var startPoint = start("Paris");
+//   alert(start("Paris"));
+//   var endPoint = end("Rome");
 //   var request = {
-//     origin: start,
-//     destination: end,
+//     origin: startPoint,
+//     destination: endPoint,
 //     travelMode: 'DRIVING'
 //   };
 //   directionsService.route(request, function(result, status) {
