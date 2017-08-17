@@ -36,72 +36,51 @@ function initMap() {
     });
     directionsDisplay.setMap(map);
 
-    // function printer(){
-    //     console.log("End of function");
-    // }
+    function printer(){
+        console.log("End of function");
+    }
 
-    //     configRoute("Paris", "Rome", printer);
-    getAddr("Rome", function(res) {
-      map.setCenter(res[0].geometry.location);
-        marker = new google.maps.Marker({
-            map: map,
-            position: res[0].geometry.location
-        });
-        locArray.push(res[0].geometry.location);
-        console.log(res[0].geometry.location.toString());
-});
+        configRoute("Paris", "Rome", printer);
 
 };
 
 
-getAddr = function(addr, f){
-    if(typeof addr != 'undefined' && addr != null) {
-        geocoder.geocode( { address: addr, }, function(results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
-            f(results);
-          }
+
+
+
+
+
+
+function codeAddress(place, codeCall){
+        geocoder.geocode( { 'address': place}, function(results, status) {
+      if (status == 'OK') {
+        map.setCenter(results[0].geometry.location);
+        marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
         });
-    }
-    return -1;
+        locArray.push(results[0].geometry.location);
+        console.log(place);
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+        codeCall();
+  }
+
+
+
+ function configRoute(start, end, callback){
+    // var start = start;
+    // var end = end;
+    var startPoint = codeAddress(start, function(){
+        var endPoint = codeAddress(end, function(){
+
+        });
+                    callback();
+    });
+
 }
-
-
-
-
-
-
-
-
-// function codeAddress(place, codeCall){
-//         geocoder.geocode( { 'address': place}, function(results, status) {
-//       if (status == 'OK') {
-//         map.setCenter(results[0].geometry.location);
-//         marker = new google.maps.Marker({
-//             map: map,
-//             position: results[0].geometry.location
-//         });
-//         locArray.push(results[0].geometry.location);
-//         console.log(place);
-//       } else {
-//         alert('Geocode was not successful for the following reason: ' + status);
-//       }
-//     });
-//         codeCall();
-//   }
-
-
-
-//  function configRoute(start, end, callback){
-//     // var start = start;
-//     // var end = end;
-//     var startPoint = codeAddress(start, function(){
-//         var endPoint = codeAddress(end, function(){
-
-//         });
-//                     callback();
-//     });
-
-// }
 
 
    </script>
