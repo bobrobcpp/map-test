@@ -25,6 +25,7 @@ var locArray = [];
 
 
 function initMap() {
+
      directionsService = new google.maps.DirectionsService();
     var latlng = new google.maps.LatLng(-34.397, 150.644);
     var directionsDisplay = new google.maps.DirectionsRenderer();
@@ -36,20 +37,36 @@ function initMap() {
     });
     directionsDisplay.setMap(map);
 
-    function printer(){
-        console.log("End of function");
-    }
 
-        configRoute("Paris", "Rome", printer);
+        configRoute("Florence", "Milan", printer);
+
+ function configRoute(start, end, callback){
+    codeAddress(start, function(){
+      codeAddress(end, function(){
+            callback();
+            var request = {
+                 origin: locArray[0],
+                 destination: locArray[locArray.length-1],
+                 travelMode: 'DRIVING',
+                 waypoints: [{location:"Genoa"}, {location: "Bologna"}, {location: "Venice"}],
+                 optimizeWaypoints: true
+            };
+            directionsService.route(request, function(result, status) {
+                if (status == 'OK') {
+                    console.log(result);
+                directionsDisplay.setDirections(result);
+                }
+            });
+        });
+    });
+}
+
 
 };
 
-
-
-
-
-
-
+    function printer(){
+        console.log(locArray[0].toString());
+    }
 
 function codeAddress(place, codeCall){
         geocoder.geocode( { 'address': place}, function(results, status) {
@@ -61,27 +78,31 @@ function codeAddress(place, codeCall){
         });
         locArray.push(results[0].geometry.location);
         console.log(place);
+        codeCall();
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
       }
     });
-        codeCall();
+
   }
 
 
 
- function configRoute(start, end, callback){
-    // var start = start;
-    // var end = end;
-    var startPoint = codeAddress(start, function(){
-        var endPoint = codeAddress(end, function(){
 
-        });
-                    callback();
-    });
 
-}
+// function calcRoute(start, end) {
 
+//    var request = {
+//      origin: startPoint,
+//      destination: endPoint,
+//      travelMode: 'DRIVING'
+//    };
+//    directionsService.route(request, function(result, status) {
+//      if (status == 'OK') {
+//        directionsDisplay.setDirections(result);
+//      }
+//    });
+//  }
 
    </script>
 
